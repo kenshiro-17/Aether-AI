@@ -1,0 +1,264 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@plugin "@tailwindcss/typography";
+
+@theme {
+  /* Fonts */
+  --font-sans: 'Outfit', system-ui, sans-serif;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Primary Palette (Mixed Var/Hex) */
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-50: #f0f9ff;
+  --color-primary-100: #e0f2fe;
+  --color-primary-200: #bae6fd;
+  --color-primary-300: #7dd3fc;
+  --color-primary-400: #38bdf8;
+  --color-primary-500: #0ea5e9;
+  --color-primary-600: #0284c7;
+  --color-primary-700: #0369a1;
+  --color-primary-800: #075985;
+  --color-primary-900: #0c4a6e;
+
+  /* Theme Colors */
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  /* Animations */
+  --animate-in: fadeIn 0.3s ease-out;
+  --animate-out: fadeOut 0.3s ease-in;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    100% {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+  }
+
+  /* Legacy Palettes */
+  --color-pastel-pink: #fce7f3;
+  --color-pastel-rose: #ffe4e6;
+  --color-pastel-lavender: #ede9fe;
+  --color-pastel-purple: #f3e8ff;
+  --color-pastel-blue: #e0f2fe;
+  --color-pastel-sky: #e0f2fe;
+  --color-pastel-mint: #d1fae5;
+  --color-pastel-green: #dcfce7;
+  --color-pastel-yellow: #fef9c3;
+  --color-pastel-peach: #ffedd5;
+  --color-pastel-coral: #ffe4e6;
+
+  --color-dark-bg: #09090b;
+  --color-dark-surface: #18181b;
+  --color-dark-hover: #27272a;
+  --color-dark-border: #27272a;
+  --color-dark-text: #fafafa;
+  --color-dark-muted: #a1a1aa;
+}
+
+/* Global Selection Styles - Forced High Contrast */
+::selection {
+  background-color: #0284c7;
+  /* Sky 600 - explicit hex to prevent variable issues */
+  color: #ffffff;
+  text-shadow: none;
+}
+
+@layer base {
+  :root {
+    /* Light Mode - Pristine, Professional, Air */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Dark Mode - Deep Space, Focused, Sleek */
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+    outline-color: hsl(var(--ring));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+
+
+  /* Scrollbar override for sleek look */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 9999px;
+    transition: background-color 0.2s;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--muted-foreground) / 0.5);
+  }
+}
+
+@layer components {
+
+  /* Utility for subtle gradients */
+  .subtle-gradient {
+    background: radial-gradient(circle at 50% 0%, rgba(var(--primary), 0.15) 0%, transparent 60%);
+  }
+
+  .glass-panel {
+    @apply bg-background/80 backdrop-blur-md border-r border-border;
+  }
+
+  .dark .glass-panel {
+    @apply bg-background/60;
+    /* Darker glass in dark mode */
+  }
+
+  .interactive-card {
+    @apply rounded-xl border border-border bg-card text-card-foreground shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 cursor-pointer;
+  }
+
+  /* Markdown Styles - Refined */
+  .prose-custom {
+    @apply text-foreground leading-relaxed;
+  }
+
+  .prose-custom h1,
+  .prose-custom h2,
+  .prose-custom h3 {
+    @apply font-display text-foreground mt-6 mb-3 font-semibold tracking-tight;
+  }
+
+  .prose-custom p {
+    @apply mb-4 text-muted-foreground leading-7;
+  }
+
+  .prose-custom code {
+    @apply px-1.5 py-0.5 rounded-md bg-muted text-foreground font-mono text-sm border border-border;
+  }
+
+  .prose-custom pre {
+    @apply p-0 bg-transparent my-4 rounded-xl overflow-hidden;
+  }
+
+  /* Electron Drag Region */
+  .title-drag-region {
+    -webkit-app-region: drag;
+    user-select: none;
+  }
+
+  /* Allow interactions with elements inside drag region */
+  .title-drag-region button,
+  .title-drag-region .cursor-pointer {
+    -webkit-app-region: no-drag;
+  }
+}
