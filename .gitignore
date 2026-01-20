@@ -1,0 +1,68 @@
+# Dependencies
+node_modules/
+venv/
+__pycache__/
+*.pyc
+.Python
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+build/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Model files (too large for git)
+models/*.gguf
+models/*.bin
+
+# Local storage
+qdrant_storage*/
+temp_uploads/
+uploads/
+
+# Electron
+out/
+.electron/
+
+# Expo
+.expo/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Backend binaries
+backend/bin/
+
+# Agent configs
+.agent/
+.claude/
+
+# Misc
+*.bak
+*.tmp
+processes.txt
