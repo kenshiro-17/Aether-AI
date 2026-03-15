@@ -1,36 +1,74 @@
-# Aether
+# Aether-AI
 
-A privacy-focused, local-first AI assistant that runs entirely on your own hardware. No cloud dependencies, no data leaving your machine.
+Local-first AI assistant built to run on your own hardware with private inference, long-term memory, tool use, and desktop-native interaction.
 
-## What is this?
+Aether is designed for people who want assistant capabilities without handing their documents, prompts, or workflows to a cloud service by default. The stack combines local LLM serving, a FastAPI backend, a React and Electron desktop UI, and Qdrant-backed memory.
 
-Aether is a personal AI system I built because I wanted an AI assistant that:
-- Runs completely offline on my own GPU
-- Keeps all my data local
-- Can search the web, analyze images, and execute code when needed
-- Remembers context across sessions using a vector database
+## Core Capabilities
+
+- Local-first chat and task assistance
+- Long-term memory with Qdrant vector storage
+- Multi-model support for different latency and quality targets
+- Web search and research tooling
+- Vision and OCR support through multimodal models
+- Sandboxed Python execution with AST-based restrictions
+- Electron desktop UI and in-progress mobile client
+- Model-management helpers for GGUF-based local inference
 
 ## Architecture
 
-The system consists of several components:
+```text
+Frontend (React + Electron)
+  -> FastAPI backend
+  -> local model runtime (llama.cpp / OpenAI-compatible local endpoint)
+  -> Qdrant memory layer
+  -> tool services for search, vision, and controlled execution
+```
 
-- **Backend** - FastAPI server handling chat, memory, and tool execution
-- **Frontend** - React + Electron desktop app
-- **LLM Server** - Llama.cpp serving local models (Llama 3, Mistral, etc.)
-- **Memory** - Qdrant vector DB for long-term knowledge storage
-- **Mobile** - React Native companion app (WIP)
+Primary areas:
 
-## Requirements
+- `backend/`: API, auth, memory, model management, tool orchestration
+- `frontend/`: Vite + React desktop interface with Electron wrapper
+- `mobile/aether-mobile/`: React Native companion app
+- `infra/docker-compose.yml`: local service composition
+- `scripts/`: model update and runtime helper scripts
 
-- Windows 10/11 (x64)
-- NVIDIA GPU with 8GB+ VRAM (or AMD with Vulkan)
+## Tech Stack
+
+- FastAPI
+- React + Electron
+- React Native (mobile WIP)
+- Qdrant
+- `llama.cpp` / GGUF local models
+- Python tool layer for memory, research, and execution
+
+## Hardware and Runtime Requirements
+
+- Windows 10 or 11 recommended
 - Python 3.10+
 - Node.js 18+
-- GGUF model files in `models/` directory
+- GPU recommended for good local performance
+- GGUF model files available locally
 
-## Setup
+Model selection in the repo suggests support for options such as:
 
-### Backend
+- Llama 3.2 3B
+- Llama 3.3 8B
+- Llama 4 Scout 17B
+- DeepSeek R1 Distill Llama 8B
+- LLaVA Phi-3 for image analysis
+
+## Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/kenshiro-17/Aether-AI.git
+cd Aether-AI
+```
+
+### 2. Backend setup
+
 ```bash
 cd backend
 python -m venv venv
@@ -38,55 +76,110 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### Frontend
+### 3. Frontend setup
+
 ```bash
-cd frontend
+cd ../frontend
 npm install
 ```
 
-### Models
+### 4. Optional mobile setup
 
-Download your preferred GGUF models and place them in the `models/` folder. I typically use:
-- Llama 3.2 3B for fast responses
-- Llama 3.3 8B for complex reasoning
-- LLaVA Phi-3 for image analysis
-
-## Running
-
-Just run `start_system.bat` - it handles starting all the services.
-
-To stop, close the terminal window.
-
-## Project Structure
-
-```
-backend/           # FastAPI server
-  cortex/          # AI capabilities (search, vision, etc.)
-  routers/         # API endpoints
-frontend/          # React + Electron UI
-  src/components/  # UI components
-  electron/        # Desktop app wrapper
-mobile/            # React Native app
-models/            # GGUF model files (not tracked)
-scripts/           # Utility scripts
+```bash
+cd ../mobile/aether-mobile
+npm install
 ```
 
-## Features
+### 5. Prepare models
 
-- Real-time streaming responses
-- Web search with automatic source verification
-- Image analysis and OCR
-- Secure Python code execution (sandboxed)
-- Long-term memory via RAG
-- Multi-model support (swap models on the fly)
+Place GGUF model files in the local models directory expected by the project. The repo includes model-management scripts and references to supported files in `backend/model_manager.py`.
 
-## Security
+### 6. Run the system
 
-- All LLM inference runs locally
-- Code execution is sandboxed with AST-level blocking of dangerous imports
-- Electron renderer is sandboxed (no Node.js access)
-- Strict CSP headers on frontend
+On Windows, the easiest path is:
+
+```bash
+start_system.bat
+```
+
+This is the intended orchestration entrypoint for the local stack.
+
+## Alternative Service Paths
+
+### Backend directly
+
+```bash
+cd backend
+venv\Scripts\activate
+python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+### Frontend desktop development
+
+```bash
+cd frontend
+npm run electron:dev
+```
+
+### Docker services
+
+The repo includes `infra/docker-compose.yml`, which provisions backend and Qdrant together.
+
+## What Makes It Local-First
+
+- Inference is designed to run against locally available models
+- Qdrant can run locally through file-backed storage or service mode
+- The Electron renderer is sandboxed
+- Sensitive user context does not need to leave the machine
+- Tool execution is constrained rather than fully open-ended
+
+## Security Notes
+
+Controls visible in the repo include:
+
+- AST-level blocking of dangerous Python imports
+- Electron preload isolation and sandboxing
 - PBKDF2-SHA256 password hashing
+- CSP and hardened frontend behavior
+- Memory cleanup and explicit Qdrant resource handling
+
+## Useful Repo Scripts
+
+- `start_system.bat`: primary startup flow
+- `scripts/update_llama.py`: local model runtime update helper
+- `scripts/check_llm_status.py`: local model server status check
+- `verify_backend_startup.py`: backend verification helper
+
+## Verification
+
+Suggested local checks:
+
+```bash
+python verify_backend_startup.py
+python test_register.py
+```
+
+If you are working on the memory layer, inspect `tests/test_memory.py` as well.
+
+## Project Layout
+
+```text
+backend/
+frontend/
+mobile/
+infra/
+scripts/
+tests/
+```
+
+## Notes for Contributors
+
+This repo is closer to a personal AI workstation than a single API service. If you change one area, check the assumptions in the others:
+
+- backend auth and tool execution
+- frontend desktop security model
+- local model path configuration
+- Qdrant memory persistence
 
 ## License
 
